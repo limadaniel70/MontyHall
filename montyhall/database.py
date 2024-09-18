@@ -46,12 +46,13 @@ class Database:
     def close_connection(self) -> None:
         self.database_connection.close()
 
-    # def __enter__(self) -> sqlite3.Connection:
-    #    self.database_connection = sqlite3.connect(self.db_name)
-    #    return self.database_connection
+    def __enter__(self):
+        return self
 
-    # def __exit__(self, exc_type, exc_value, traceback) -> None:
-    #    self.database_connection.close()
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        if exc_value != None:
+            print(f"Error: {exc_value}")
+        self.database_connection.close()
 
 
 if __name__ == "__main__":
