@@ -167,6 +167,13 @@ plot(data, "barchart.png")
 
 ---
 
+Este é um exemplo de uma iteração:
+
+<img src='images/example_result.png' alt='ex'/>
+
+> [!NOTE]
+> Perceba que a razão sempre será um número aproximadamente igual a 2.
+
 ## Como recriar o experimento
 
 WIP
