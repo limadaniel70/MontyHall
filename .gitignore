@@ -165,62 +165,58 @@ cython_debug/
 # Created by https://www.toptal.com/developers/gitignore/api/c
 # Edit at https://www.toptal.com/developers/gitignore?templates=c
 
-### C ###
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
+# Arquivos temporários e de saída do LaTeX
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
 *.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.run.xml
+*.nav
+*.snm
+*.vrb
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# PDFs e outras saídas
+*.pdf
+*.dvi
+*.ps
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Arquivos de backup e temporários
+*.bak
+*.backup
+*.tmp
+*~
+\#*\#
 
-# End of https://www.toptal.com/developers/gitignore/api/c
+# Arquivos de cache e históricos de compilação do LaTeX
+*.latexmk
+.cache
+latex.out
 
-# Binaries
-bin/*
-obj/*
+# Arquivos do TeXstudio e outros editores
+*.synctex(busy)
+*.synctex(busy.gz)
+*.swp
+*.swo
+
+# Arquivos R
+.Rhistory
+.RData
+.Rproj.user/
