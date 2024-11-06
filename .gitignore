@@ -224,3 +224,63 @@ dkms.conf
 # Binaries
 bin/*
 obj/*
+
+# Arquivos temporários e de saída do LaTeX
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.run.xml
+*.nav
+*.snm
+*.vrb
+
+# PDFs e outras saídas
+*.pdf
+*.dvi
+*.ps
+
+# Arquivos de backup e temporários
+*.bak
+*.backup
+*.tmp
+*~
+\#*\#
+
+# Arquivos de cache e históricos de compilação do LaTeX
+*.latexmk
+.cache
+latex.out
+
+# Arquivos do TeXstudio e outros editores
+*.synctex(busy)
+*.synctex(busy.gz)
+*.swp
+*.swo
+
+# Arquivos R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
