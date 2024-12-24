@@ -1,37 +1,25 @@
-import os
-from data_analysis import plot
-from database import Database, Game
-from jinja2 import Environment, FileSystemLoader
-from montyhallgame import MontyHallGame
-from settings import amostra, db_name
+import csv
+import random
+
+NUM_GAMES = 1_000_000
 
 
-env = Environment(loader=FileSystemLoader(searchpath=(os.path.join(os.path.realpath(os.path.dirname(__file__)), "templates"))))
-template = env.get_template("data.html")
+def gen_random_door() -> int:
+    return random.randint(1, 3)
 
-db = Database(db_name)
-mh = MontyHallGame()
 
-for i in range(amostra):
-    print(f"Iteration: {i}", end="\r")
-    db.insert_data(Game(mh.monty_hall(True), mh.monty_hall(False)))
+def monty_hall_game(switch: bool) -> bool:
+    prize_door = gen_random_door()
+    first_choice = gen_random_door()
+    if switch:
+        return prize_door != first_choice
+    else:
+        return first_choice == prize_door
 
-wins: dict[str, tuple[int, None]] = {
-    "changing": db.get_wins_changing(),
-    "not_changing": db.get_wins_not_changing(),
-}
 
-ratio: float = wins["changing"][0] / wins["not_changing"][0]
-
-data = db.get_all_games()
-
-db.close_connection()
-
-plot(data, "barchart.png")
-
-rendered_html = template.render(
-    wins_changing=wins["changing"][0], wins_not_changing=wins["not_changing"][0], ratio=ratio
-)
-
-with open("final_analysis.html", "w") as f:
-    f.write(rendered_html)
+if __name__ == "__main__":
+    with open("montyhall.csv", mode="w") as file:
+        w = csv.writer(file)
+        w.writerow(["stay", "change"])
+        for _ in range(NUM_GAMES):
+            w.writerow([monty_hall_game(False), monty_hall_game(True)])
