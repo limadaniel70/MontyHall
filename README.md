@@ -37,141 +37,48 @@ Observe, na imagem abaixo, a representação em um digrama de árvore das possib
 
 ## Como o programa funciona
 
-Primeiramente, temos uma função que gera um identificador para as portas (escolhida, revelada e premiada). Essa função é implementada da seguinte maneira:
+Primeiramente, temos uma função que gera um identificador para as portas (1, 2 ou 3). Essa função é implementada da seguinte forma:
 
 ```python
- def gen_random_door(self) -> int:
-        return random.randint(1, 3)
+def gen_random_door() -> int:
+    return random.randint(1, 3)
 ```
 
-Em seguida, outra função, utilizando a função anterior, define valores para a porta escolhida pelo jogador e para a porta premiada:
+A função monty_hall_game utiliza a função anterior para definir as portas escolhidas e premiadas. Dependendo da escolha de trocar ou não de porta, o resultado é avaliado:
 
 ```python
-def monty_hall(self, trocar_porta: bool) -> bool:
-  porta_premiada: int = self.gen_random_door()
-  primeira_porta_escolhida: int = self.gen_random_door()
-        
-...
+def monty_hall_game(switch: bool) -> bool:
+    prize_door = gen_random_door()
+    first_choice = gen_random_door()
+    if switch:
+        return prize_door != first_choice
+    else:
+        return first_choice == prize_door
 ```
 
-Após definir os valores da porta que deve ser escolhida pelo jogador e da porta que contém o prêmio, é definida a porta que é revelada pelo apresentador - note que essa não pode ser igual à porta que contém o prêmio ou a que foi escolhida pelo jogador:
+A função anterior retorna 'True' ou 'False', se o jogador tiver ganhado ou perdido, respectivamente.
+
+Após isso, é definida uma amostra pro experimento (quantidade de jogos/partidas):
 
 ```python
-...
-   porta_revelada: int = random.choice(
-            list({1, 2, 3} - {porta_premiada, primeira_porta_escolhida})
-        )
-...
-```
-
-A função, então, checa se o jogador deve ou não trocar de porta. Se o usuário trocar, outra variável é criada ("segunda_porta_escolhida"), a qual não pode ser igual à primeira porta escolhia ou à porta revelada; depois verifica-se se o jogador escolheu a porta com premiada ou não. Se o jogador não trocar, verifica-se apenas se a porta escolhida foi a premiada (retorna True) ou não (retorna False):
-
-```python
-def monty_hall(self, trocar_porta: bool) -> bool:
-
-...
-
-    if trocar_porta:
-            return ({1, 2, 3} - {porta_revelada, primeira_porta_escolhida}).pop() == porta_premiada
-        else:
-            return primeira_porta_escolhida == porta_premiada
-...
-```
-
-Nesse momento é definida uma amostra pro experimento (quantidade de jogos/partidas):
-
-```python
-amostra = 1_000
+NUM_GAMES = 1_000_000
 ```
 
 > [!WARNING]
 > Note que quanto maior a amostra mais tempo levará para rodar todos os casos.
 
-Para salvar os dados, o programa cria uma tabela chamada "Ganhou" com três colunas: id (int), won_changing (int [0 ou 1]) won_not_changing(int [0 ou 1]). Exemplo em sql:
-
-```sql
-CREATE TABLE IF NOT EXISTS Game(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  won_changing INTEGER,
-  won_not_changing INTEGER);     
-```
-
-Implementacão em python:
+O programa então escreve os resultados dessas partidas em um arquivo csv (montyhall.csv), onde cada linha é uma iteração de uma partida trocando e outra permanecendo com a mesma porta:
 
 ```python
-...
-class Database:
-
-    def __init__(self, db_name: str) -> None:
-        self.database_connection: sqlite3.Connection = sqlite3.connect(db_name)
-        self.cursor: sqlite3.Cursor = self.database_connection.cursor()
-        self.cursor.execute(
-            """CREATE TABLE IF NOT EXISTS Game(
-                                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                won_changing INTEGER,
-                                won_not_changing INTEGER
-                            )"""
-        )
-
-    def insert_data(self, game: Game) -> None:
-        self.cursor.execute(
-            "INSERT INTO Game(won_changing, won_not_changing) VALUES (?, ?)",
-            (game.won_changing, game.won_not_changing),
-        )
-        self.database_connection.commit()
-
-    def get_all_games(self) -> list[tuple[int, int, int]]:
-        result = self.cursor.execute("SELECT * FROM Game")
-        return result.fetchall()
-
-    def get_wins_changing(self) -> tuple[int, None]:
-        result = self.cursor.execute("SELECT count(won_changing) FROM Game WHERE won_changing == 1")
-        return result.fetchone()
-
-    def get_wins_not_changing(self) -> tuple[int, None]:
-        result = self.cursor.execute("SELECT count(won_not_changing) FROM Game WHERE won_not_changing == 1")
-        return result.fetchone()
-
-    def close_connection(self) -> None:
-        self.database_connection.close()       
-...
-```
-
-Por fim, o programa itera na quantidade de amostras, escrevendo cada uma das partidas no banco dedados e, no final, salvando as alterações:
-
-```python
-
-from data_analysis import plot
-from database import Database, Game
-from montyhallgame import MontyHallGame
-from settings import amostra, db_name
-
-...
-
-db = Database(db_name)
-mh = MontyHallGame()
-
-for i in range(amostra):
-    print(f"Iteration: {i}", end="\r")
-    db.insert_data(Game(mh.monty_hall(True), mh.monty_hall(False)))
-
-...
-
-data = db.get_all_games()
-
-db.close_connection()
-
-plot(data, "barchart.png")
+with open("montyhall.csv", mode="w") as f:
+    w = csv.writer(f)
+    w.writerow(["stay", "change"])
+    for _ in range(NUM_GAMES):
+        w.writerow([monty_hall_game(False), monty_hall_game(True)])
 
 ```
-
----
 
 ## Como recriar o experimento
-
-WIP
-
----
 
 ## Referências
 
