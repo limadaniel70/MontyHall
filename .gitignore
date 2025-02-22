@@ -224,3 +224,5 @@ dkms.conf
 # Binaries
 bin/*
 obj/*
+
+*.csv
