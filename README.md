@@ -6,8 +6,7 @@
   2. [O problema](#o-problema)
   3. [Porque é melhor trocar de porta](#porque-é-melhor-trocar-de-porta)
   4. [Como o programa funciona](#como-o-programa-funciona)
-  5. [Como recriar o experimento](#como-recriar-o-experimento)
-  6. [Referências](#referências)
+  5. [Referências](#referências)
 
 ## Introdução
 
@@ -33,7 +32,23 @@ Como visto anteriormente, cada porta tem 1/3 de chance de ter o prêmio. No enta
 
 Observe, na imagem abaixo, a representação em um digrama de árvore das possibilidades.
 
-<img src="images/tree-graph.png" alt="digrama de ávore das possibilidades do jogo."/>
+<img src="./images/tree-graph.png" alt="digrama de ávore das possibilidades do jogo."/>
+
+## O Experimento
+
+Em uma simulação do problema de MontyHall com um milhao (1.000.000) de partidas foram obtidos os resultados ilustrados pelos gráficos abaixo.
+
+O primeiro gráfico mostra a razão entre as vitórias ao permanecer na porta inicial e ao trocar. Como esperado, a taxa de sucesso ao trocar de porta é aproximadamente o dobro da taxa ao manter a escolha original, confirmando a vantagem estatística da troca.
+
+<img src="./images/ratio.png" alt="razão entre vitórias ao ficar e ao trocar de portas">
+
+O segundo gráfico ilustra a quantidade total de vitórias e derrotas para ambas as estratégias. Pode-se observar que os jogadores que optaram por trocar de porta venceram significativamente mais vezes do que aqueles que mantiveram sua escolha inicial, reforçando a conclusão matemática do problema.
+
+<img src="./images/qtd.png" alt="quantidade de vitórias e derrotas">
+
+O terceiro gráfico apresenta a evolução da probabilidade de vitória ao longo das partidas. A curva correspondente à troca de porta converge para aproximadamente 66,7% (ou 2/3), enquanto a curva da escolha inicial se estabiliza em cerca de 33,3% (ou 1/3), confirmando que trocar sempre será a melhor decisão.
+
+<img src="./images/probabilidade.png" alt="probabilidade de vencer">
 
 ## Como o programa funciona
 
@@ -77,8 +92,6 @@ with open("montyhall.csv", mode="w") as f:
         w.writerow([monty_hall_game(False), monty_hall_game(True)])
 
 ```
-
-## Como recriar o experimento
 
 ## Referências
 
