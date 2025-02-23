@@ -6,7 +6,8 @@
   2. [O problema](#o-problema)
   3. [Porque é melhor trocar de porta](#porque-é-melhor-trocar-de-porta)
   4. [Como o programa funciona](#como-o-programa-funciona)
-  5. [Referências](#referências)
+  5. [O Experimento](#o-experimento)
+  6. [Referências](#referências)
 
 ## Introdução
 
